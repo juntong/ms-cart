@@ -2,16 +2,18 @@ import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm';
 
 export class CreateCartsTable1666102759217 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
     await queryRunner.createTable(
       new Table({
         name: 'carts',
         columns: [
           new TableColumn({
             name: 'id',
-            type: 'int',
+            type: 'varchar',
             isPrimary: true,
-            isGenerated: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
+            length: '50',
           }),
           new TableColumn({
             name: 'user_id',
@@ -20,23 +22,30 @@ export class CreateCartsTable1666102759217 implements MigrationInterface {
           }),
           new TableColumn({
             name: 'total_qty',
-            type: 'number',
-            length: '10',
+            type: 'numeric',
+            precision: 10,
+            default: 0,
           }),
           new TableColumn({
             name: 'total_amount',
-            type: 'number',
-            length: '10',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            default: 0,
           }),
           new TableColumn({
             name: 'total_net_amount',
-            type: 'number',
-            length: '10',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            default: 0,
           }),
           new TableColumn({
             name: 'total_discount',
-            type: 'number',
-            length: '10',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            default: 0,
           }),
           new TableColumn({
             name: 'created_at',
