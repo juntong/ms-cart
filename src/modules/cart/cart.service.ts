@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
@@ -8,6 +8,8 @@ import { CartEntity } from './entities/cart.entity';
 @Injectable()
 export class CartService {
   constructor(
+    @Inject(Logger)
+    private readonly logger: LoggerService,
     @InjectRepository(CartEntity)
     private readonly cartRepo: Repository<CartEntity>,
   ) {}
@@ -19,7 +21,11 @@ export class CartService {
       },
     });
 
-    console.log(cart);
+    this.logger.log({
+      message: 'query-result',
+      type: 'query-result',
+      result: cart,
+    });
 
     return cart;
   }
